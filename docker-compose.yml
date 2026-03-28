@@ -1,0 +1,39 @@
+
+
+services:
+  nginx:
+    image: nginx:latest
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/conf.d:/etc/nginx/conf.d
+      - ./nginx/ssl:/etc/nginx/ssl
+    depends_on:
+      - backend1
+      - backend2
+      - backend3
+      - frontend
+      - admin
+
+  admin:
+    build: ./admin
+
+  frontend:
+    build: ./frontend
+
+  backend1:
+    build: ./backend
+    environment:
+      - INSTANCE_ID=1
+
+  backend2:
+    build: ./backend
+    environment:
+      - INSTANCE_ID=2
+
+  backend3:
+    build: ./backend
+    environment:
+      - INSTANCE_ID=3
